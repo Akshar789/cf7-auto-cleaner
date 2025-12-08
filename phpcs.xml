@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<ruleset name="CF7 Auto Cleaner">
+	<description>WordPress Coding Standards for CF7 Auto Cleaner</description>
+
+	<!-- Check all PHP files -->
+	<file>.</file>
+
+	<!-- Exclude vendor and node_modules -->
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/tests/*</exclude-pattern>
+
+	<!-- Use WordPress coding standards -->
+	<rule ref="WordPress">
+		<!-- Allow short array syntax -->
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		
+		<!-- Allow short ternary -->
+		<exclude name="WordPress.PHP.DisallowShortTernary"/>
+	</rule>
+
+	<!-- Check for PHP cross-version compatibility -->
+	<config name="testVersion" value="7.4-"/>
+	<rule ref="PHPCompatibility"/>
+
+	<!-- Set minimum supported WP version -->
+	<config name="minimum_supported_wp_version" value="5.8"/>
+
+	<!-- Text domain check -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="cf7-auto-cleaner"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- File name check -->
+	<rule ref="WordPress.Files.FileName">
+		<properties>
+			<property name="strict_class_file_names" value="false"/>
+		</properties>
+	</rule>
+</ruleset>

@@ -1,0 +1,86 @@
+# Sample Extended Blacklist
+# One word or phrase per line
+# Lines starting with # are comments
+
+# Profanity (basic examples - add your own)
+spam
+scam
+fraud
+
+# Promotional/Marketing
+click here
+buy now
+limited time
+act now
+order now
+free money
+make money fast
+work from home
+get rich quick
+guaranteed income
+no risk
+risk free
+100% free
+special promotion
+exclusive offer
+limited offer
+once in a lifetime
+
+# Pharmaceutical
+pharmacy
+prescription
+pills
+medication
+
+# Gambling/Casino
+casino
+poker
+lottery
+jackpot
+betting
+gamble
+
+# Adult Content (examples)
+adult
+explicit
+
+# Cryptocurrency/Investment
+bitcoin
+crypto
+investment opportunity
+forex
+trading signals
+
+# Common Spam Patterns
+click here now
+visit our website
+check this out
+amazing deal
+don't miss
+hurry up
+last chance
+urgent
+congratulations you won
+
+# Multi-word promotional phrases
+buy this product
+visit our site
+check our website
+sign up now
+register today
+join now
+subscribe now
+download now
+claim your prize
+you have won
+winner notification
+
+# Suspicious patterns
+verify your account
+confirm your identity
+update your information
+suspended account
+unusual activity
+security alert
+
+# Add your own entries below:

@@ -1,0 +1,90 @@
+# Example Contact Form 7 Form for Testing CF7 Auto Cleaner
+
+Copy and paste this into a Contact Form 7 form to test the plugin.
+
+## Form Code:
+
+```
+<label> Your Name (required)
+    [text* your-name] </label>
+
+<label> Your Email (required)
+    [email* your-email] </label>
+
+<label> Subject
+    [text your-subject] </label>
+
+<label> Your Message
+    [textarea your-message] </label>
+
+[submit "Send"]
+```
+
+## Testing Instructions:
+
+### Test 1: Client-Side Filtering (Live Erase)
+1. Open the form in your browser
+2. Type banned words in the "Your Message" field (e.g., "spam", "casino", "click here")
+3. Watch them disappear as you type
+4. Verify caret position stays reasonable
+
+### Test 2: Server-Side Filtering
+1. Disable JavaScript in your browser
+2. Fill out the form with banned content
+3. Submit the form
+4. Check the email received - banned words should be removed
+5. Check logs: Settings → CF7 Auto Cleaner → Logs
+
+### Test 3: Block Mode
+1. Go to Settings → CF7 Auto Cleaner
+2. Change "Default Action" to "Block"
+3. Submit form with banned content
+4. Verify you see a validation error
+5. Verify submission is not sent
+
+### Test 4: Per-Form Settings
+1. Edit this CF7 form
+2. Find "CF7 Auto Cleaner Settings" meta box
+3. Set action to "Replace" with mask "***"
+4. Add custom blacklist entry
+5. Test that it uses form-specific settings
+
+### Test 5: Whitelist
+1. Add "assess" to blacklist
+2. Type "Please assess this" - should be blocked
+3. Add "assess" to whitelist
+4. Type "Please assess this" - should NOT be blocked
+
+### Test Content Examples:
+
+**Promotional Content:**
+- "Click here to buy now!"
+- "Limited time offer - act now!"
+- "Visit our website for free money"
+
+**Profanity (use your blacklist):**
+- Test with words from your blacklist
+
+**Leetspeak:**
+- "Buy v14gr4 now"
+- "This is sp@m"
+- "C1ick h3r3"
+
+**Multi-word Phrases:**
+- "Please click here to continue"
+- "Buy this product today"
+
+### Expected Results:
+
+- **Erase mode**: Banned words removed, rest of message intact
+- **Replace mode**: Banned words replaced with "*****" (or your mask)
+- **Block mode**: Form shows validation error, submission blocked
+- **Flag only mode**: Message sent as-is, but logged
+
+### Checking Logs:
+
+1. Go to Settings → CF7 Auto Cleaner → Logs
+2. You should see entries for each filtered submission
+3. Check that fields, action, and excerpt are recorded
+4. Try filtering by form, action, date
+5. Export logs to CSV and verify format

@@ -1,0 +1,33 @@
+# Sample Whitelist
+# Words that should never be blocked (prevent false positives)
+# One word or phrase per line
+
+# Common false positives
+assess
+assessment
+classic
+classical
+glass
+glasses
+assignment
+assistance
+assistant
+class
+classroom
+mass
+massage
+pass
+password
+compass
+
+# Brand names (examples)
+assassin's creed
+classic coke
+
+# Technical terms
+analytics
+analysis
+bypass
+casino royale
+
+# Add your own entries below:
