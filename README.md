@@ -1,18 +1,18 @@
 # CF7 Auto Cleaner — Auto Erase Profanity & Promotional Content
 
-A production-ready WordPress plugin that automatically filters profanity and promotional content from Contact Form 7 submissions with dual-layer (client-side + server-side) sanitization.
+A lightweight WordPress plugin that automatically filters profanity and promotional content from Contact Form 7 submissions with dual-layer (client-side + server-side) sanitization.
 
 ## Features
 
 - **Dual-Layer Filtering**: Client-side live filtering + server-side sanitization
-- **Advanced Detection**: Regex, fuzzy matching (Levenshtein), and Aho-Corasick algorithm
-- **Flexible Actions**: Erase, replace with mask, block submission, or flag only
+- **Smart Detection**: Regex pattern matching with normalization
+- **Automatic Erase**: Removes banned words/phrases automatically
 - **Per-Form Settings**: Override global settings for individual forms
-- **Comprehensive Logging**: Track all filtered submissions with privacy controls
-- **Import/Export**: CSV import/export for blacklists and whitelists
-- **Performance Optimized**: Pattern caching and fast matching for large lists
-- **Privacy-Aware**: GDPR-compliant with configurable data retention
-- **Fully Translatable**: i18n ready with POT file included
+- **Whitelist Support**: Prevent false positives with whitelist
+- **User Notifications**: Optional notification when content is modified
+- **Performance Optimized**: Lightweight and fast
+- **50+ Default Blacklist Words**: Pre-configured spam and promotional terms
+- **Fully Translatable**: i18n ready
 
 ## Requirements
 
@@ -23,8 +23,8 @@ A production-ready WordPress plugin that automatically filters profanity and pro
 ## Installation
 
 1. **Upload the plugin**:
-   - Download the `cf7-auto-cleaner` folder
-   - Upload to `/wp-content/plugins/` directory
+   - Download the plugin files
+   - Upload to `/wp-content/plugins/cf7-auto-cleaner/` directory
    - Or install via WordPress admin: Plugins → Add New → Upload Plugin
 
 2. **Activate the plugin**:
@@ -32,8 +32,8 @@ A production-ready WordPress plugin that automatically filters profanity and pro
    - Find "CF7 Auto Cleaner" and click "Activate"
 
 3. **Configure settings**:
-   - Navigate to Settings → CF7 Auto Cleaner
-   - Configure your blacklist, whitelist, and action preferences
+   - Navigate to **Contact → Auto Cleaner**
+   - Configure your blacklist and whitelist
    - Save settings
 
 4. **Test the plugin**:
@@ -45,55 +45,46 @@ A production-ready WordPress plugin that automatically filters profanity and pro
 
 ### Global Settings
 
-Navigate to **Settings → CF7 Auto Cleaner** to configure:
+Navigate to **Contact → Auto Cleaner** to configure:
 
 #### Basic Settings
 - **Enable Plugin**: Turn filtering on/off globally
-- **Default Action**: Choose what happens when banned content is detected
-  - `Erase`: Remove banned words
-  - `Replace`: Replace with mask (e.g., `*****`)
-  - `Block`: Show validation error
-  - `Flag Only`: Log but don't modify
-- **Erase Behavior**: Erase word only or entire phrase
 - **User Notification**: Show message when content is modified
+- **Notification Message**: Customize the message shown to users
 
 #### Blacklist & Whitelist
 - **Blacklist**: Words/phrases to filter (one per line)
 - **Whitelist**: Words to never block (e.g., "assess", "classic")
 - Supports multi-word phrases
-- Import from CSV/TXT files
-
-#### Advanced Detection
-- **Fuzzy Matching**: Enable Levenshtein distance matching
-- **Fuzzy Threshold**: Character distance tolerance (1-5)
-- **Fast Matcher**: Use Aho-Corasick for large blacklists (>500 entries)
-
-#### Logging
-- **Log Submissions**: Record all filtered submissions
-- **Retention Days**: Auto-delete logs after X days
-- **Max Logs**: Maximum number of logs to keep
-- **Admin Email**: Receive notifications for blocked/flagged submissions
-- **Store Full Content**: Privacy warning - stores complete submission data
+- 50+ default spam/promotional terms included
 
 ### Per-Form Settings
 
 Edit any Contact Form 7 form to find the **CF7 Auto Cleaner Settings** meta box:
 
 - **Enable for this form**: Override global enable/disable
-- **Action Override**: Use different action for this form
 - **Excluded Fields**: Skip filtering for specific fields (comma-separated)
 - **Additional Blacklist/Whitelist**: Merge with global lists
 
-### Viewing Logs
+## Default Blacklist Words
 
-Navigate to **Settings → CF7 Auto Cleaner → Logs** to:
+The plugin comes pre-configured with 50+ common spam and promotional terms:
 
-- View all filtered submissions
-- Filter by form, action, date range
-- Search log content
-- Export logs to CSV
-- Mark logs as resolved
-- Add admin notes
+**Spam & Scam**: spam, scam, fraud, phishing
+
+**Gambling**: casino, lottery, poker, betting, jackpot, gamble
+
+**Promotional**: click here, buy now, limited time, act now, order now, sign up now, register now, subscribe now, download now
+
+**Money Schemes**: free money, make money fast, get rich quick, work from home, guaranteed income, no risk, risk free, 100% free
+
+**Urgency Tactics**: urgent, hurry up, last chance, don't miss, limited offer, special promotion, exclusive offer, once in a lifetime
+
+**Suspicious**: verify your account, confirm your identity, update your information, suspended account, unusual activity, security alert
+
+**Cryptocurrency**: bitcoin, crypto, forex, trading signals
+
+**Pharmaceutical**: pills, medication, prescription, pharmacy
 
 ## Usage Examples
 
@@ -143,20 +134,28 @@ assignment
 
 This prevents "assess" and "classic" from being flagged.
 
+## How It Works
+
+### Client-Side Filtering (Live)
+- JavaScript monitors form fields in real-time
+- Banned words are removed as users type
+- Provides instant feedback
+- Caret position is preserved for smooth typing
+
+### Server-Side Filtering (Backup)
+- PHP sanitization runs before email is sent
+- Catches anything missed by client-side
+- Works even if JavaScript is disabled
+- Ensures clean data in all cases
+
+### Normalization
+The plugin normalizes text before detection:
+- Converts to lowercase
+- Removes special characters
+- Handles leetspeak (e.g., "v1agra" → "viagra")
+- Collapses repeated characters (e.g., "spaaam" → "spam")
+
 ## Testing
-
-### Running Unit Tests
-
-```bash
-# Install dependencies
-composer install
-
-# Run PHPUnit tests
-vendor/bin/phpunit
-
-# Run specific test file
-vendor/bin/phpunit tests/test-normalizer.php
-```
 
 ### Manual Testing
 
@@ -171,52 +170,20 @@ vendor/bin/phpunit tests/test-normalizer.php
    - Verify server sanitization works
    - Check email contains sanitized content
 
-3. **Block Mode Testing**:
-   - Set action to "Block"
-   - Submit form with banned content
-   - Verify validation error appears
-
-## Performance Tips
-
-### For Large Blacklists (>500 entries)
-
-1. Enable **Use Fast Matcher** (Aho-Corasick algorithm)
-2. Enable **Caching** (default: ON)
-3. Consider increasing PHP memory limit if needed:
-   ```php
-   define('WP_MEMORY_LIMIT', '256M');
-   ```
-
-### For High-Traffic Sites
-
-1. Set **Performance Mode** to "High"
-2. Reduce **Log Retention Days** to minimize database size
-3. Use **Flag Only** mode instead of real-time filtering
-4. Consider server-side only (disable client-side JS)
-
 ## Troubleshooting
 
 ### Plugin Not Filtering
 
-1. Check if plugin is enabled: Settings → CF7 Auto Cleaner
+1. Check if plugin is enabled: Contact → Auto Cleaner
 2. Verify Contact Form 7 is installed and activated
 3. Check per-form settings (may be disabled for specific form)
-4. Clear browser cache and WordPress transients
+4. Clear browser cache
 
 ### False Positives
 
 1. Add words to **Whitelist**
-2. Disable **Fuzzy Matching** if too aggressive
-3. Review blacklist for overly broad terms
-4. Use **Flag Only** mode to test before enforcing
-
-### Performance Issues
-
-1. Check blacklist size (>2000 entries may slow down)
-2. Enable **Fast Matcher** for large lists
-3. Disable **Fuzzy Matching** (CPU-intensive)
-4. Reduce **Log Retention Days**
-5. Check PHP error logs for memory issues
+2. Review blacklist for overly broad terms
+3. Test with different word combinations
 
 ### Client-Side Not Working
 
@@ -224,32 +191,6 @@ vendor/bin/phpunit tests/test-normalizer.php
 2. Verify CF7 is using latest version
 3. Test with default WordPress theme
 4. Disable other plugins to check for conflicts
-
-## Privacy & GDPR Compliance
-
-### Data Stored
-
-By default, the plugin stores:
-- Form ID
-- Timestamp
-- IP address (can be redacted)
-- User agent (sanitized)
-- Blocked field names
-- Truncated content excerpt (not full submission)
-
-### Privacy Controls
-
-1. **Disable Full Content Storage**: Keep "Store Full Content" OFF
-2. **Set Retention Period**: Auto-delete logs after X days
-3. **Export with Redaction**: IP addresses are partially redacted in exports
-4. **Disable Logging**: Turn off logging entirely if not needed
-
-### GDPR Recommendations
-
-- Set log retention to 30 days or less
-- Do NOT enable "Store Full Content"
-- Inform users in privacy policy
-- Provide data export/deletion on request
 
 ## Extending the Plugin
 
@@ -276,28 +217,23 @@ add_filter('cf7ac_detect_banned', function($is_banned, $text) {
 
 ## Changelog
 
+### Version 1.0.1 (2025-12-08)
+- Removed logging feature for simplicity
+- Moved settings to Contact Form 7 menu
+- Added 50+ default blacklist words
+- Improved modal design
+- Performance optimizations
+
 ### Version 1.0.0 (2025-12-08)
 - Initial release
 - Dual-layer filtering (client + server)
-- Advanced detection algorithms
 - Per-form settings
-- Comprehensive logging
-- Import/export functionality
-
-## Future Features
-
-- Machine learning classifier integration
-- External API support (CleanSpeak, WebPurify)
-- Bulk log actions
-- Advanced analytics dashboard
-- Multi-language blacklist packs
-- Regex pattern support in UI
+- Blacklist and whitelist support
 
 ## Support
 
 For issues, feature requests, or questions:
-- GitHub Issues: [github.com/yourusername/cf7-auto-cleaner](https://github.com/yourusername/cf7-auto-cleaner)
-- WordPress Support Forum: [wordpress.org/support/plugin/cf7-auto-cleaner](https://wordpress.org/support/plugin/cf7-auto-cleaner)
+- GitHub Issues: [github.com/Akshar789/cf7-auto-cleaner](https://github.com/Akshar789/cf7-auto-cleaner)
 
 ## License
 
@@ -305,7 +241,7 @@ This plugin is licensed under GPL-2.0+. See LICENSE file for details.
 
 ## Credits
 
-Developed by [Your Name]
+Developed by Akshar
 Contact Form 7 by Takayuki Miyoshi
 
 ## Contributing
@@ -313,11 +249,8 @@ Contact Form 7 by Takayuki Miyoshi
 Contributions are welcome! Please:
 1. Fork the repository
 2. Create a feature branch
-3. Add tests for new functionality
-4. Submit a pull request
+3. Submit a pull request
 
-## Acknowledgments
+---
 
-- Contact Form 7 team for the excellent form plugin
-- WordPress community for coding standards and best practices
-- Contributors and testers
+**Note**: This plugin focuses on simplicity and performance. It automatically erases banned content without complex logging or analytics features.
