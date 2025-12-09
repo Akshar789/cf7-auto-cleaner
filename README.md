@@ -6,7 +6,7 @@ A lightweight WordPress plugin that automatically filters profanity and promotio
 
 - **Dual-Layer Filtering**: Client-side live filtering + server-side sanitization
 - **Smart Detection**: Regex pattern matching with normalization
-- **Automatic Erase**: Removes banned words/phrases automatically
+- **Automatic Erase**: Removes banned words automatically
 - **Per-Form Settings**: Override global settings for individual forms
 - **Whitelist Support**: Prevent false positives with whitelist
 - **User Notifications**: Optional notification when content is modified
