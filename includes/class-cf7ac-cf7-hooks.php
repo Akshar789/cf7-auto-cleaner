@@ -146,27 +146,13 @@ class CF7AC_CF7_Hooks
      */
     private static function is_enabled_for_form($form_id)
     {
-        // Check global setting.
+        // Check global setting only.
         $core = CF7AC_Core::get_instance();
-        $enabled = $core->is_enabled();
-
-        if (!$enabled) {
-            return false;
-        }
-
-        // Check per-form override.
-        $per_form_enabled = get_post_meta($form_id, 'cf7ac_enabled', true);
-
-        // If per-form setting exists, use it; otherwise use global.
-        if ('' !== $per_form_enabled) {
-            return (bool) $per_form_enabled;
-        }
-
-        return true;
+        return $core->is_enabled();
     }
 
     /**
-     * Get settings for a specific form (merged global + per-form).
+     * Get settings for a specific form.
      *
      * @param int $form_id Form ID.
      * @return array Settings.
@@ -176,29 +162,15 @@ class CF7AC_CF7_Hooks
         $core = CF7AC_Core::get_instance();
         $global_settings = $core->get_settings();
 
-        // Get per-form overrides.
-        $per_form_action = get_post_meta($form_id, 'cf7ac_action', true);
-        $per_form_blacklist = get_post_meta($form_id, 'cf7ac_blacklist', true);
-        $per_form_whitelist = get_post_meta($form_id, 'cf7ac_whitelist', true);
-        $per_form_excluded_fields = get_post_meta($form_id, 'cf7ac_excluded_fields', true);
-
-        // Merge blacklists.
+        // Parse blacklist.
         $blacklist = array_filter(array_map('trim', explode("\n", $global_settings['blacklist'] ?? '')));
-        if (!empty($per_form_blacklist)) {
-            $per_form_list = array_filter(array_map('trim', explode("\n", $per_form_blacklist)));
-            $blacklist = array_unique(array_merge($blacklist, $per_form_list));
-        }
 
-        // Merge whitelists.
+        // Parse whitelist.
         $whitelist = array_filter(array_map('trim', explode("\n", $global_settings['whitelist'] ?? '')));
-        if (!empty($per_form_whitelist)) {
-            $per_form_list = array_filter(array_map('trim', explode("\n", $per_form_whitelist)));
-            $whitelist = array_unique(array_merge($whitelist, $per_form_list));
-        }
 
         // Build settings.
         $settings = array(
-            'action' => !empty($per_form_action) ? $per_form_action : ($global_settings['default_action'] ?? 'erase'),
+            'action' => $global_settings['default_action'] ?? 'erase',
             'replace_mask' => $global_settings['replace_mask'] ?? '*****',
             'erase_behavior' => $global_settings['erase_behavior'] ?? 'erase_word_only',
             'blacklist' => $blacklist,
@@ -206,7 +178,7 @@ class CF7AC_CF7_Hooks
             'fuzzy_matching' => $global_settings['fuzzy_matching'] ?? false,
             'fuzzy_threshold' => $global_settings['fuzzy_threshold'] ?? 2,
             'use_fast_matcher' => $global_settings['use_fast_matcher'] ?? false,
-            'excluded_fields' => !empty($per_form_excluded_fields) ? explode(',', $per_form_excluded_fields) : array(),
+            'excluded_fields' => array(),
         );
 
         return $settings;

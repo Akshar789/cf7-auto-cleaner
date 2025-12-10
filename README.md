@@ -58,13 +58,7 @@ Navigate to **Contact → Auto Cleaner** to configure:
 - Supports multi-word phrases
 - 50+ default spam/promotional terms included
 
-### Per-Form Settings
 
-Edit any Contact Form 7 form to find the **CF7 Auto Cleaner Settings** meta box:
-
-- **Enable for this form**: Override global enable/disable
-- **Excluded Fields**: Skip filtering for specific fields (comma-separated)
-- **Additional Blacklist/Whitelist**: Merge with global lists
 
 ## Default Blacklist Words
 

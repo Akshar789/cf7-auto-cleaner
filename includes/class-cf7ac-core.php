@@ -69,8 +69,6 @@ class CF7AC_Core
         if (is_admin()) {
             add_action('admin_menu', array($this, 'register_admin_menu'));
             add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
-            add_action('add_meta_boxes', array($this, 'add_per_form_meta_box'));
-            add_action('save_post', array($this, 'save_per_form_settings'));
         }
 
         // Frontend hooks.
@@ -197,49 +195,7 @@ class CF7AC_Core
         );
     }
 
-    /**
-     * Add per-form meta box to CF7 form edit screen.
-     */
-    public function add_per_form_meta_box()
-    {
-        $screen = get_current_screen();
-        if ($screen && 'wpcf7_contact_form' === $screen->post_type) {
-            add_meta_box(
-                'cf7ac_per_form_settings',
-                __('CF7 Auto Cleaner Settings', 'cf7-auto-cleaner'),
-                array($this, 'render_per_form_meta_box'),
-                'wpcf7_contact_form',
-                'normal',
-                'default'
-            );
-        }
-    }
 
-    /**
-     * Render per-form meta box.
-     *
-     * @param WP_Post $post Current post object.
-     */
-    public function render_per_form_meta_box($post)
-    {
-        if (!class_exists('CF7AC_Per_Form_Settings')) {
-            require_once CF7AC_PLUGIN_DIR . 'admin/class-cf7ac-per-form-settings.php';
-        }
-        CF7AC_Per_Form_Settings::render_meta_box($post);
-    }
-
-    /**
-     * Save per-form settings.
-     *
-     * @param int $post_id Post ID.
-     */
-    public function save_per_form_settings($post_id)
-    {
-        if (!class_exists('CF7AC_Per_Form_Settings')) {
-            require_once CF7AC_PLUGIN_DIR . 'admin/class-cf7ac-per-form-settings.php';
-        }
-        CF7AC_Per_Form_Settings::save_meta_box($post_id);
-    }
 
     /**
      * Cleanup old logs based on retention settings.

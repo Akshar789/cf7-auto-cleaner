@@ -21,7 +21,6 @@ CF7 Auto Cleaner is a lightweight WordPress plugin that automatically removes un
 * **Automatic Erase** - Removes banned words/phrases automatically
 * **50+ Default Blacklist Words** - Pre-configured spam and promotional terms
 * **Whitelist Support** - Prevent false positives
-* **Per-Form Settings** - Override global settings for individual forms
 * **User Notifications** - Optional notification when content is modified
 * **Performance Optimized** - Lightweight and fast
 * **Fully Translatable** - i18n ready
